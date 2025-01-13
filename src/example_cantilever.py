@@ -94,7 +94,7 @@ def create_mesh_example():
         
     return mesh
 
-def run_example_nonlinear_solver():
+def test_nonlinear_solver():
     # Create mesh
     mesh = create_mesh_example()
     
