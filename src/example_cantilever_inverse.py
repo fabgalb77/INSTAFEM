@@ -14,7 +14,7 @@ def create_inverse_example():
     length = 100.0  # mm
     height = 10.0   # mm
     width = 10.0    # mm
-    E = 8000.0    # MPa (N/mm²)
+    E = 3000.0    # MPa (N/mm²)
     nu = 0.3
     
     # Create x coordinates to ensure we have nodes at L/3 and L/2
@@ -56,8 +56,8 @@ def create_inverse_example():
                 ])
     
     # Add material
-    steel = LinearElastic("material", E=E, nu=nu)  # Properties in MPa
-    mesh.add_elements(ElementType.TET4, np.array(elements), steel)
+    material = LinearElastic("material", E=E, nu=nu)  # Properties in MPa
+    mesh.add_elements(ElementType.TET4, np.array(elements), material)
     
     # Add fixed boundary condition at x=0
     fixed_nodes = np.where(np.abs(nodes[:, 0]) < 1e-6)[0]
@@ -98,9 +98,9 @@ def create_inverse_example():
         UnknownForce(third_node, np.array([0, 1, 0]), bounds=(-5000, 5000)),
     ]
     
-    # Define displacement constraint (zero vertical displacement at midpoint)
+    # Define displacement constraint 
     displacement_constraints = [
-        DisplacementConstraint(mid_node, [1], [0.0])  # Zero y-displacement at midpoint
+        DisplacementConstraint(mid_node, [1], [0.0]) # Zero y-displacement at midpoint
     ]
     
     return InverseProblem(mesh, unknown_forces, displacement_constraints, MinimumForceObjective())
